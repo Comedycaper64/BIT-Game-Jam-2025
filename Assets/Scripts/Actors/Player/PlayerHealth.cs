@@ -1,9 +1,17 @@
-using UnityEngine;
-
 public class PlayerHealth : HealthSystem
 {
+    private PlayerManager playerManager;
+
+    private void Start()
+    {
+        playerManager = GetComponent<PlayerManager>();
+    }
+
     public override void TakeDamage(int damageAmount)
     {
-        //reduce petals from player manager
+        if (!playerManager.TryDecrementPetalCounter(damageAmount))
+        {
+            playerManager.KillPlayer();
+        }
     }
 }

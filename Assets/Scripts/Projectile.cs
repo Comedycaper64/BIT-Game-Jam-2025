@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -17,6 +18,10 @@ public class Projectile : MonoBehaviour
 
     [SerializeField]
     private GameObject projectileVisual;
+
+    [SerializeField]
+    private LayerMask environmentLayermask;
+    public static Action OnPlayerProjectileHit;
 
     private void Awake()
     {
@@ -69,11 +74,31 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if ((environmentLayermask & (1 << other.gameObject.layer)) != 0)
+        {
+            Deactivate();
+            //Maybe particle effect for hitting wall?
+            return;
+        }
+
         if (
             other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem)
             && (healthSystem.GetIsPlayer() != playerProjectile)
         )
         {
+            if (playerProjectile)
+            {
+                if (healthSystem.GetType() != typeof(PlantHealth))
+                {
+                    OnPlayerProjectileHit?.Invoke();
+                }
+
+                if (other.TryGetComponent<EnemyMovement>(out EnemyMovement movement))
+                {
+                    movement.KnockbackEnemy(direction);
+                }
+            }
+
             healthSystem.TakeDamage(damage);
             Deactivate();
         }

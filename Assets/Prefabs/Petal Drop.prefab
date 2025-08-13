@@ -137,6 +137,7 @@ MonoBehaviour:
   persistent: 0
   pickupCollider: {fileID: 1760495593909268479}
   pickupVisual: {fileID: 3491541427323641285}
+  petalCollectSFX: {fileID: 8300000, guid: 48376c0d3bf8d1941a3f55e045915b61, type: 3}
 --- !u!61 &1760495593909268479
 BoxCollider2D:
   m_ObjectHideFlags: 0

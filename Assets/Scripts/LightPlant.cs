@@ -12,6 +12,9 @@ public class LightPlant : MonoBehaviour
     [SerializeField]
     private float lightStoredMax = 100f;
     private float breakGraceTime = 5f;
+
+    [SerializeField]
+    private AudioClip lightPlantFed;
     private Coroutine graceCoroutine;
 
     public Action OnPlantBroken;
@@ -34,6 +37,8 @@ public class LightPlant : MonoBehaviour
         }
 
         lightStored = Mathf.Min(lightStoredMax, lightStored + feedingLightIncrease);
+
+        AudioManager.PlaySFX(lightPlantFed, 1f, 0, transform.position);
 
         if (graceCoroutine != null)
         {

@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class BatChaseState : State
+public class BirdChaseState : State
 {
-    private float batAttackRange = 3f;
+    private float birdAttackRange = 5f;
     private float attackTimer = 0f;
     private float attackTime = 3f;
 
-    public BatChaseState(StateMachine stateMachine)
+    public BirdChaseState(StateMachine stateMachine)
         : base(stateMachine) { }
 
     public override void Enter()
     {
         stateMachine.smAnimator.SetBool("chasing", true);
+        //Attack time = statemachine.get attack time
     }
 
     public override void Exit()
@@ -27,13 +28,13 @@ public class BatChaseState : State
 
         float distanceToPlayer = Vector2.Distance(playerPosition, stateMachine.transform.position);
 
-        if (distanceToPlayer <= batAttackRange)
+        if (distanceToPlayer <= birdAttackRange)
         {
             attackTimer += deltaTime;
 
             if (attackTimer > attackTime)
             {
-                stateMachine.SwitchState(new BatAttackState(stateMachine));
+                stateMachine.SwitchState(new BirdAttackState(stateMachine));
             }
         }
     }

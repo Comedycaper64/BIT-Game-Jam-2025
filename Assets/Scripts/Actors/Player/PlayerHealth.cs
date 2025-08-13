@@ -1,6 +1,11 @@
+using UnityEngine;
+
 public class PlayerHealth : HealthSystem
 {
     private PlayerManager playerManager;
+
+    [SerializeField]
+    private AudioClip playerDamageSFX;
 
     private void Start()
     {
@@ -9,6 +14,8 @@ public class PlayerHealth : HealthSystem
 
     public override void TakeDamage(int damageAmount)
     {
+        AudioManager.PlaySFX(playerDamageSFX, 1f, 0, transform.position);
+
         if (!playerManager.TryDecrementPetalCounter(damageAmount))
         {
             playerManager.KillPlayer();

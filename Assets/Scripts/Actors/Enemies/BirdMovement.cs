@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-public class BatMovement : EnemyMovement
+public class BirdMovement : EnemyMovement
 {
     private bool approach = false;
-    private float approachDistance = 2.25f;
+    private float approachDistance = 3.5f;
     private float approachRefreshCD = 0.1f;
     private float approachRefreshTimer = 0f;
     private float attackWindupTime = 0.5f;
-    private float obstacleRaycastDistance = 2f;
-    private float alternateRaycastOffsetDegrees = 45f;
+    private float obstacleRaycastDistance = 5f;
+    private float alternateRaycastOffsetDegrees = 60f;
+    private float featherProjectileSpeed = 3f;
     private Vector2 moveDirection = Vector2.zero;
     private Coroutine attackCoroutine;
 
@@ -50,10 +51,16 @@ public class BatMovement : EnemyMovement
     public IEnumerator AttackMovement(Vector2 playerPosition)
     {
         Vector2 playerDirection = (playerPosition - (Vector2)transform.position).normalized;
-        enemyRB.AddForce(-playerDirection * 3f, ForceMode2D.Impulse);
+        enemyRB.AddForce(playerDirection * 2f, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(attackWindupTime);
-        enemyRB.AddForce(playerDirection * 10f, ForceMode2D.Impulse);
+
+        ProjectileManager.SpawnProjectile(
+            transform.position,
+            playerDirection,
+            1,
+            featherProjectileSpeed
+        );
     }
 
     private Vector2 GetApproachDirection(Vector2 playerPosition)

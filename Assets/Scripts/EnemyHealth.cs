@@ -10,6 +10,9 @@ public class EnemyHealth : HealthSystem
     private int maxHealth = 1;
     private int health;
 
+    [SerializeField]
+    private AudioClip enemyHitSFX;
+
     public Action OnTakeDamage;
     public Action OnDeath;
 
@@ -36,6 +39,8 @@ public class EnemyHealth : HealthSystem
         }
 
         health = Mathf.Max(0, health - damage);
+
+        AudioManager.PlaySFX(enemyHitSFX, 1f, 0, transform.position);
 
         if (health == 0f)
         {

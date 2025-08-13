@@ -15,6 +15,9 @@ public class PlayerAttacker : MonoBehaviour
     [SerializeField]
     private PlayerManager playerManager;
 
+    [SerializeField]
+    private AudioClip playerShoot;
+
     private void Start()
     {
         InputManager.Instance.OnAttackEvent += TryAttack;
@@ -65,6 +68,8 @@ public class PlayerAttacker : MonoBehaviour
             stats.GetProjectileSpeed(),
             true
         );
+
+        AudioManager.PlaySFX(playerShoot, 1f, 0, transform.position);
 
         weaponRechargeSpeed = stats.GetAttackSpeed();
 

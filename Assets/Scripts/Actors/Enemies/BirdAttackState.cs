@@ -1,9 +1,9 @@
-public class BatAttackState : State
+public class BirdAttackState : State
 {
     private float attackTimer = 0f;
-    private float attackTime = 1.5f;
+    private float attackTime = 1f;
 
-    public BatAttackState(StateMachine stateMachine)
+    public BirdAttackState(StateMachine stateMachine)
         : base(stateMachine) { }
 
     public override void Enter()
@@ -23,7 +23,7 @@ public class BatAttackState : State
 
         if (attackTimer >= attackTime)
         {
-            stateMachine.SwitchState(new BatChaseState(stateMachine));
+            stateMachine.SwitchState(new BirdChaseState(stateMachine));
         }
     }
 }

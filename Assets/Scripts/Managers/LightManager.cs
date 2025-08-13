@@ -6,7 +6,7 @@ public class LightManager : MonoBehaviour
     private bool lightCheckActive = false;
     private float currentLightLevel = 10;
     private float lightLevel = 100;
-    private float lightDrainSpeed = 5f;
+    private float lightDrainSpeed = 2f;
     private float lightDrainBreakMultiplier = 2f;
 
     [SerializeField]

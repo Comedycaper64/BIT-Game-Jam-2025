@@ -22,6 +22,8 @@ public abstract class StateMachine : MonoBehaviour
     private void Start()
     {
         playerTransform = PlayerIdentifier.PlayerTransform;
+        ToggleInactive(true);
+        ResetEnemy();
     }
 
     private void OnDisable()

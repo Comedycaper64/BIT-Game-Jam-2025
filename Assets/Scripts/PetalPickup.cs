@@ -13,6 +13,9 @@ public class PetalPickup : MonoBehaviour
 
     [SerializeField]
     private GameObject pickupVisual;
+
+    [SerializeField]
+    private AudioClip petalCollectSFX;
     private Coroutine disappearCoroutine;
 
     private void Awake()
@@ -61,18 +64,25 @@ public class PetalPickup : MonoBehaviour
         pickupVisual.SetActive(false);
     }
 
+    private void PickupPetal()
+    {
+        DespawnPetal();
+
+        AudioManager.PlaySFX(petalCollectSFX, 1f, 0, transform.position);
+
+        if (disappearCoroutine != null)
+        {
+            StopCoroutine(disappearCoroutine);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent<PlayerManager>(out PlayerManager playerManager))
         {
             playerManager.IncrementPetalCounter(petalValue);
 
-            DespawnPetal();
-
-            if (disappearCoroutine != null)
-            {
-                StopCoroutine(disappearCoroutine);
-            }
+            PickupPetal();
         }
     }
 }

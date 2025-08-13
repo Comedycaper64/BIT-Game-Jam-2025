@@ -11,9 +11,13 @@ public class BatStateMachine : StateMachine
     [SerializeField]
     private EnemyContactDamager enemyContactDamager;
 
+    [SerializeField]
+    private AudioClip batSpawnSFX;
+
     public override void SpawnEnemy()
     {
         SwitchState(new BatSpawnState(this));
+        AudioManager.PlaySFX(batSpawnSFX, 1f, 0, transform.position);
     }
 
     public override void ToggleInactive(bool toggle)

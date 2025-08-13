@@ -17,11 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform visualTransform;
 
-    // [SerializeField]
-    // private AudioClip dashSFX;
-
-    // [SerializeField]
-    // private AudioClip altDashSFX;
+    [SerializeField]
+    private AudioClip dashSFX;
 
     private void Awake()
     {
@@ -106,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
         dashCoroutine = StartCoroutine(ApplyDash());
 
-        //AudioManager.PlaySFX(dashSFX, sfxVolume, 0, transform.position, sfxVariance);
+        AudioManager.PlaySFX(dashSFX, 1f, 0, transform.position);
 
         dashAvailable = false;
     }

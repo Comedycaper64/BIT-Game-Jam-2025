@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    private const int PETAL_ATTACK_COST = 1;
     private bool playerDead = false;
     private bool weaponAvailable = false;
     private float weaponRechargeSpeed = 1f;
@@ -11,9 +10,6 @@ public class PlayerAttacker : MonoBehaviour
 
     [SerializeField]
     private PlayerStats stats;
-
-    [SerializeField]
-    private PlayerManager playerManager;
 
     [SerializeField]
     private AudioClip playerShoot;
@@ -58,8 +54,6 @@ public class PlayerAttacker : MonoBehaviour
         {
             return;
         }
-
-        playerManager.TryDecrementPetalCounter(PETAL_ATTACK_COST);
 
         ProjectileManager.SpawnProjectile(
             transform.position,

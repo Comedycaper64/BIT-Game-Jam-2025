@@ -19,6 +19,16 @@ public class LightManager : MonoBehaviour
 
     public static Action OnLightExtinguished;
 
+    private void OnEnable()
+    {
+        LevelManager.OnGameEnd += EndLightCheck;
+    }
+
+    private void OnDisable()
+    {
+        LevelManager.OnGameEnd -= EndLightCheck;
+    }
+
     private void Update()
     {
         if (!lightCheckActive)
@@ -80,5 +90,10 @@ public class LightManager : MonoBehaviour
     public void BeginLightCheck()
     {
         lightCheckActive = true;
+    }
+
+    private void EndLightCheck()
+    {
+        lightCheckActive = false;
     }
 }

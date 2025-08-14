@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private Transform visualTransform;
 
     [SerializeField]
+    private Animator playerAnimator;
+
+    [SerializeField]
     private AudioClip dashSFX;
 
     private void Awake()
@@ -81,6 +84,15 @@ public class PlayerMovement : MonoBehaviour
                     * dashModifier
                     * Time.fixedDeltaTime
         );
+
+        if (movementValue.sqrMagnitude > 0f)
+        {
+            playerAnimator.SetBool("moving", true);
+        }
+        else
+        {
+            playerAnimator.SetBool("moving", false);
+        }
 
         if (movementValue.x < 0)
         {

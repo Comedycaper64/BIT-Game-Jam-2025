@@ -16,7 +16,7 @@ public class CameraTarget : MonoBehaviour
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 cameraTargetPosition =
-            (mousePosition + cameraLookaheadRatio * (Vector2)playerTransform.position)
+            (mousePosition + (cameraLookaheadRatio - 1) * (Vector2)playerTransform.position)
             / cameraLookaheadRatio;
 
         transform.position = cameraTargetPosition;

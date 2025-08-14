@@ -16,13 +16,12 @@ public class BatStateMachine : StateMachine
 
     public override void SpawnEnemy()
     {
-        SwitchState(new BatSpawnState(this));
+        SwitchState(new EnemySpawnState(this));
         AudioManager.PlaySFX(batSpawnSFX, 1f, 0, transform.position);
     }
 
     public override void ToggleInactive(bool toggle)
     {
-        batVisual.SetActive(!toggle);
         batCollider.enabled = !toggle;
         enemyContactDamager.ToggleDamager(!toggle);
     }

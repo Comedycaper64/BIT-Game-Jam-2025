@@ -15,6 +15,9 @@ public class PetalPickup : MonoBehaviour
     private GameObject pickupVisual;
 
     [SerializeField]
+    private Animator petalAnim;
+
+    [SerializeField]
     private AudioClip petalCollectSFX;
     private Coroutine disappearCoroutine;
 
@@ -33,6 +36,8 @@ public class PetalPickup : MonoBehaviour
 
         pickupCollider.enabled = true;
         pickupVisual.SetActive(true);
+
+        petalAnim.SetTrigger("spawn");
 
         disappearCoroutine = StartCoroutine(DisappearCountdown());
     }

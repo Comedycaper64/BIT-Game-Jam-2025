@@ -13,7 +13,7 @@ public class BirdStateMachine : StateMachine
 
     public override void SpawnEnemy()
     {
-        SwitchState(new BirdSpawnState(this));
+        SwitchState(new EnemySpawnState(this));
         AudioManager.PlaySFX(birdSpawnSFX, 1f, 0, transform.position);
     }
 

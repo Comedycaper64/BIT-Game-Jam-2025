@@ -1,15 +1,16 @@
-public class BatAttackState : State
+public class EnemyAttackState : State
 {
     private float attackTimer = 0f;
     private float attackTime = 1.5f;
 
-    public BatAttackState(StateMachine stateMachine)
+    public EnemyAttackState(StateMachine stateMachine)
         : base(stateMachine) { }
 
     public override void Enter()
     {
         stateMachine.enemyMovement.PerformAttack(stateMachine.GetPlayerTransform().position);
-        stateMachine.smAnimator.SetTrigger("Attack");
+        stateMachine.smAnimator.SetTrigger("attack");
+        attackTime = stateMachine.GetAttackTime();
     }
 
     public override void Exit()
@@ -23,7 +24,7 @@ public class BatAttackState : State
 
         if (attackTimer >= attackTime)
         {
-            stateMachine.SwitchState(new BatChaseState(stateMachine));
+            stateMachine.SwitchState(new EnemyChaseState(stateMachine));
         }
     }
 }

@@ -16,7 +16,7 @@ public class BoarStateMachine : StateMachine
 
     public override void SpawnEnemy()
     {
-        //SwitchState(new BatSpawnState(this));
+        SwitchState(new EnemySpawnState(this));
         AudioManager.PlaySFX(boarSpawnSFX, 1f, 0, transform.position);
     }
 

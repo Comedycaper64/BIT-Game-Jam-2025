@@ -5,6 +5,15 @@ public abstract class StateMachine : MonoBehaviour
 {
     [SerializeField]
     private int petalDropValue = 1;
+
+    [SerializeField]
+    private float attackRange = 3f;
+
+    [SerializeField]
+    private float attackInterval = 3f;
+
+    [SerializeField]
+    private float attackTime = 1f;
     private State currentState;
     private Transform playerTransform;
     protected EnemyHealth enemyHealth;
@@ -68,4 +77,19 @@ public abstract class StateMachine : MonoBehaviour
     }
 
     public abstract void ToggleInactive(bool toggle);
+
+    public float GetAttackRange()
+    {
+        return attackRange;
+    }
+
+    public float GetAttackInterval()
+    {
+        return attackInterval;
+    }
+
+    public float GetAttackTime()
+    {
+        return attackTime;
+    }
 }

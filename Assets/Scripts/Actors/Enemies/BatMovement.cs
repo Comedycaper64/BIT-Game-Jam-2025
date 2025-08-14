@@ -22,14 +22,9 @@ public class BatMovement : EnemyMovement
     {
         if (approach)
         {
-            ApplyMovementForces();
+            ApplyMovementForces(moveDirection);
             approach = false;
         }
-    }
-
-    private void ApplyMovementForces()
-    {
-        enemyRB.AddForce(moveDirection * movementSpeed);
     }
 
     public override void PerformAttack(Vector2 playerPosition)

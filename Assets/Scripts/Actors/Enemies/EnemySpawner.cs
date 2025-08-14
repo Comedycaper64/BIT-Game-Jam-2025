@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum SpawnerBehaviour
 {
@@ -11,12 +12,31 @@ public enum SpawnerBehaviour
 
 public class EnemySpawner : MonoBehaviour
 {
+    private int spawnGridIndex = 0;
     private int batIndex = 0;
     private int birdIndex = 0;
     private int boarIndex = 0;
+    private int aliveEnemies = 0;
+    private int enemySpawnLimit;
+
+    private const int SPAWN_AVAILABILITY_CHECKS = 5;
+    private const float SPAWN_AVAILABILITY_RADIUS = 0.25f;
 
     private const int HAWK_THRESHOLD = 50;
     private const int BOAR_THRESHOLD = 80;
+
+    private const int ENEMY_LIMIT_EASY = 4;
+    private const int ENEMY_LIMIT_MEDIUM = 5;
+    private const int ENEMY_LIMIT_HARD = 6;
+
+    [SerializeField]
+    private Transform spawnGrid;
+
+    [SerializeField]
+    private Transform[] spawnLocations;
+
+    [SerializeField]
+    private LayerMask environmentLayermask;
 
     [SerializeField]
     private BatStateMachine[] batEnemies;
@@ -29,24 +49,66 @@ public class EnemySpawner : MonoBehaviour
 
     private SpawnerBehaviour spawnerBehaviour = SpawnerBehaviour.birds;
 
+    private void Start()
+    {
+        spawnGridIndex = Random.Range(0, spawnLocations.Length);
+        enemySpawnLimit = ENEMY_LIMIT_EASY;
+        aliveEnemies = 0;
+    }
+
+    private void OnEnable()
+    {
+        EnemyDeadState.OnEnemyDead += ReduceEnemyCount;
+    }
+
+    private void OnDisable()
+    {
+        EnemyDeadState.OnEnemyDead -= ReduceEnemyCount;
+    }
+
     public void SpawnEnemy()
     {
+        if (aliveEnemies >= enemySpawnLimit)
+        {
+            return;
+        }
+
         if (!TryGenerateSpawnLocation(out Vector3 spawnLocation))
         {
             return;
         }
 
         RandomlyChooseSpawnedEnemy(spawnLocation);
+        aliveEnemies++;
     }
 
     private bool TryGenerateSpawnLocation(out Vector3 spawnLocation)
     {
         spawnLocation = Vector3.zero;
 
-        //Find spawn area on the outskirts of camera vision
-        // Making sure that the spawn location isn't in an impassable object
+        spawnGrid.position = PlayerIdentifier.PlayerTransform.position;
 
-        return true;
+        for (int i = 0; i < SPAWN_AVAILABILITY_CHECKS; i++)
+        {
+            Vector3 testSpawn = spawnLocations[spawnGridIndex].position;
+
+            spawnGridIndex++;
+
+            if (spawnGridIndex >= spawnLocations.Length)
+            {
+                spawnGridIndex = 0;
+            }
+
+            if (
+                !Physics2D.OverlapCircle(testSpawn, SPAWN_AVAILABILITY_RADIUS, environmentLayermask)
+            )
+            {
+                spawnLocation = testSpawn;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void RandomlyChooseSpawnedEnemy(Vector3 spawnLocation)
@@ -135,5 +197,19 @@ public class EnemySpawner : MonoBehaviour
     public void UpdateSpawnerBehaviour(SpawnerBehaviour newBehaviour)
     {
         spawnerBehaviour = newBehaviour;
+
+        if (spawnerBehaviour == SpawnerBehaviour.boars)
+        {
+            enemySpawnLimit = ENEMY_LIMIT_MEDIUM;
+        }
+        else if (spawnerBehaviour == SpawnerBehaviour.fastBirds)
+        {
+            enemySpawnLimit = ENEMY_LIMIT_HARD;
+        }
+    }
+
+    private void ReduceEnemyCount()
+    {
+        aliveEnemies = Mathf.Max(0, aliveEnemies - 1);
     }
 }

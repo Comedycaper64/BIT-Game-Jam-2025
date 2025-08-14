@@ -1,5 +1,9 @@
+using System;
+
 public class EnemyDeadState : State
 {
+    public static Action OnEnemyDead;
+
     public EnemyDeadState(StateMachine stateMachine)
         : base(stateMachine) { }
 
@@ -7,6 +11,7 @@ public class EnemyDeadState : State
     {
         stateMachine.ToggleInactive(true);
         stateMachine.smAnimator.SetTrigger("death");
+        OnEnemyDead?.Invoke();
     }
 
     public override void Exit() { }

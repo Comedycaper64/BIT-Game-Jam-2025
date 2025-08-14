@@ -22,6 +22,7 @@ public class Projectile : MonoBehaviour
     [SerializeField]
     private LayerMask environmentLayermask;
     public static Action OnPlayerProjectileHit;
+    public static Action OnPlayerProjectileExpended;
 
     private void Awake()
     {
@@ -77,6 +78,7 @@ public class Projectile : MonoBehaviour
         if ((environmentLayermask & (1 << other.gameObject.layer)) != 0)
         {
             Deactivate();
+            OnPlayerProjectileExpended?.Invoke();
             //Maybe particle effect for hitting wall?
             return;
         }
@@ -91,6 +93,10 @@ public class Projectile : MonoBehaviour
                 if (healthSystem.GetType() != typeof(PlantHealth))
                 {
                     OnPlayerProjectileHit?.Invoke();
+                }
+                else
+                {
+                    OnPlayerProjectileExpended?.Invoke();
                 }
 
                 if (other.TryGetComponent<EnemyMovement>(out EnemyMovement movement))

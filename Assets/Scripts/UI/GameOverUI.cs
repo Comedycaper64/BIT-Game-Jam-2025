@@ -8,12 +8,12 @@ public class GameOverUI : MonoBehaviour
 
     private void Start()
     {
-        LightManager.OnLightExtinguished += ToggleGameOverUI;
+        LevelManager.OnGameEnd += ToggleGameOverUI;
     }
 
     private void OnDisable()
     {
-        LightManager.OnLightExtinguished -= ToggleGameOverUI;
+        LevelManager.OnGameEnd -= ToggleGameOverUI;
     }
 
     private void ToggleGameOverUI()

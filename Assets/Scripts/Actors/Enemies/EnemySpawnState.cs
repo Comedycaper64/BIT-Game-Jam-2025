@@ -1,12 +1,13 @@
-public class BatSpawnState : State
+public class EnemySpawnState : State
 {
-    public BatSpawnState(StateMachine stateMachine)
+    public EnemySpawnState(StateMachine stateMachine)
         : base(stateMachine) { }
 
     public override void Enter()
     {
         stateMachine.ToggleInactive(false);
-        stateMachine.SwitchState(new BatChaseState(stateMachine));
+        stateMachine.SwitchState(new EnemyChaseState(stateMachine));
+        stateMachine.smAnimator.SetTrigger("spawn");
     }
 
     public override void Exit() { }

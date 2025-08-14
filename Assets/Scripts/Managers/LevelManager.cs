@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -15,15 +16,20 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private EnemySpawner enemySpawner;
+    public static Action OnGameEnd;
 
     private void Awake()
     {
         GameStartUI.OnGameStart += StartGame;
+        PlayerManager.OnPlayerDead += PlayerDeadGameOver;
+        LightManager.OnLightExtinguished += GameOver;
     }
 
     private void OnDisable()
     {
         GameStartUI.OnGameStart -= StartGame;
+        PlayerManager.OnPlayerDead -= PlayerDeadGameOver;
+        LightManager.OnLightExtinguished -= GameOver;
     }
 
     private void Update()
@@ -59,5 +65,16 @@ public class LevelManager : MonoBehaviour
         //Enable player
         lightManager.BeginLightCheck();
         levelActive = true;
+    }
+
+    private void PlayerDeadGameOver(object sender, bool e)
+    {
+        GameOver();
+    }
+
+    private void GameOver()
+    {
+        levelActive = false;
+        OnGameEnd?.Invoke();
     }
 }

@@ -4,9 +4,10 @@ public class PlayerOptions : MonoBehaviour
 {
     private const string MUSIC_VOLUME = "MusicVolume";
     private const string SFX_VOLUME = "SFXVolume";
+    private const float MUSIC_LIMITER = 0.2f;
 
     private static float MUSIC_VOLUME_DEF = 0.5f;
-    private static float SFX_VOLUME_DEF = 0.5f;
+    private static float SFX_VOLUME_DEF = 0.75f;
 
     public static void SetMusicVolume(float newVolume)
     {
@@ -21,6 +22,18 @@ public class PlayerOptions : MonoBehaviour
     }
 
     public static float GetMusicVolume()
+    {
+        if (!PlayerPrefs.HasKey(MUSIC_VOLUME))
+        {
+            return MUSIC_VOLUME_DEF * MUSIC_LIMITER;
+        }
+        else
+        {
+            return PlayerPrefs.GetFloat(MUSIC_VOLUME) * MUSIC_LIMITER;
+        }
+    }
+
+    public static float GetMusicVolumeSettings()
     {
         if (!PlayerPrefs.HasKey(MUSIC_VOLUME))
         {

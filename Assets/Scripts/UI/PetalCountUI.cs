@@ -1,10 +1,13 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PetalCountUI : MonoBehaviour
 {
+    // [SerializeField]
+    // private TextMeshProUGUI petalText;
+
     [SerializeField]
-    private TextMeshProUGUI petalText;
+    private Slider petalSlider;
 
     private void OnEnable()
     {
@@ -18,6 +21,6 @@ public class PetalCountUI : MonoBehaviour
 
     private void UpdatePetalUI(object sender, int newPetal)
     {
-        petalText.text = "Petals: " + newPetal;
+        petalSlider.value = newPetal;
     }
 }

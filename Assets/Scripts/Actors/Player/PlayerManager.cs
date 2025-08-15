@@ -25,12 +25,19 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     private Animator playerAnimator;
 
+    [SerializeField]
+    private Animator playerHeadAnimator;
+
     public static EventHandler<bool> OnPlayerDead;
     public static EventHandler<int> OnNewPetalCount;
 
     private void Awake()
     {
         playerStats = GetComponent<PlayerStats>();
+    }
+
+    private void Start()
+    {
         petalCounter = petalStartAmount;
         UpdateBloomStatus();
     }
@@ -52,6 +59,8 @@ public class PlayerManager : MonoBehaviour
         OnNewPetalCount?.Invoke(this, petalCounter);
 
         playerAnimator.SetBool("injured", false);
+        playerHeadAnimator.SetBool("bulb", false);
+        playerHeadAnimator.SetBool("flower", false);
 
         if (petalCounter <= 0)
         {
@@ -65,11 +74,15 @@ public class PlayerManager : MonoBehaviour
         else if (petalCounter < PETAL_BLOOM_THRESHOLD)
         {
             playerBloom = PlayerBloom.bud;
+            playerHeadAnimator.SetBool("bulb", true);
         }
         else
         {
             playerBloom = PlayerBloom.flower;
+            playerHeadAnimator.SetBool("flower", true);
         }
+
+        playerHeadAnimator.SetTrigger("bloom");
 
         playerStats.UpdateStats(playerBloom);
     }

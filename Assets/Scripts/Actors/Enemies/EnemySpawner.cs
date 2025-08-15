@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public enum SpawnerBehaviour
 {
@@ -16,6 +15,8 @@ public class EnemySpawner : MonoBehaviour
     private int batIndex = 0;
     private int birdIndex = 0;
     private int boarIndex = 0;
+    private int fungusIndex = 0;
+
     private int aliveEnemies = 0;
     private int enemySpawnLimit;
 
@@ -47,7 +48,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private BoarStateMachine[] boarEnemies;
 
-    private SpawnerBehaviour spawnerBehaviour = SpawnerBehaviour.birds;
+    [SerializeField]
+    private FungusEnemy[] fungusEnemies;
+
+    private SpawnerBehaviour spawnerBehaviour = SpawnerBehaviour.bats;
 
     private void Start()
     {
@@ -194,6 +198,18 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    private void SpawnFungus()
+    {
+        if (fungusIndex >= fungusEnemies.Length)
+        {
+            return;
+        }
+
+        FungusEnemy spawnedFungus = fungusEnemies[fungusIndex];
+        spawnedFungus.SpawnFungus();
+        fungusIndex++;
+    }
+
     public void UpdateSpawnerBehaviour(SpawnerBehaviour newBehaviour)
     {
         spawnerBehaviour = newBehaviour;
@@ -206,6 +222,16 @@ public class EnemySpawner : MonoBehaviour
         {
             enemySpawnLimit = ENEMY_LIMIT_HARD;
         }
+
+        if ((int)spawnerBehaviour > 0)
+        {
+            SpawnFungus();
+        }
+    }
+
+    public SpawnerBehaviour GetSpawnerBehaviour()
+    {
+        return spawnerBehaviour;
     }
 
     private void ReduceEnemyCount()

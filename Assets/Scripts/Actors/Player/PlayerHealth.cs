@@ -13,6 +13,9 @@ public class PlayerHealth : HealthSystem
     [SerializeField]
     private AudioClip playerDamageSFX;
 
+    [SerializeField]
+    private AudioClip playerDeathSFX;
+
     private void Start()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -48,14 +51,14 @@ public class PlayerHealth : HealthSystem
             return;
         }
 
-        AudioManager.PlaySFX(playerDamageSFX, 1f, 0, transform.position);
-
         if (!playerManager.TryDecrementPetalCounter(damageAmount))
         {
+            AudioManager.PlaySFX(playerDeathSFX, 1f, 0, transform.position);
             playerManager.KillPlayer();
         }
         else
         {
+            AudioManager.PlaySFX(playerDamageSFX, 1f, 0, transform.position);
             StartCoroutine(DamageInvincibility());
         }
     }

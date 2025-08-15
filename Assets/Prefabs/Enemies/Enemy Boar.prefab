@@ -61,7 +61,7 @@ MonoBehaviour:
   boarVisual: {fileID: 8910988387039088460}
   boarCollider: {fileID: 1583022080365229638}
   enemyContactDamager: {fileID: 8700552815786593993}
-  boarSpawnSFX: {fileID: 8300000, guid: 9199118f0c081684cb9a9c865922b075, type: 3}
+  boarSpawnSFX: {fileID: 8300000, guid: c7de647f306fd6042a72e14330a1b1ad, type: 3}
 --- !u!114 &8111969802532345714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,6 +80,11 @@ MonoBehaviour:
     m_Bits: 64
   visualTransform: {fileID: 1222124867622014139}
   enemyRB: {fileID: 1222717120533918400}
+  footStepSFX:
+  - {fileID: 8300000, guid: c687211e2389ff54aa9f1fd48bdd9e39, type: 3}
+  - {fileID: 8300000, guid: 1212f619923e9e749a2ff9071251a78e, type: 3}
+  - {fileID: 8300000, guid: cd3f63f071691d946b98567b047ea2ab, type: 3}
+  attackSFX: {fileID: 8300000, guid: 5c4917d52605930448def7560f754849, type: 3}
 --- !u!114 &431080286946166180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +101,7 @@ MonoBehaviour:
   isInvincible: 0
   maxHealth: 5
   enemyHitSFX: {fileID: 8300000, guid: 56d2867b8745a144aab7ff355927c27e, type: 3}
+  enemyDeathSFX: {fileID: 8300000, guid: 63c222a21b9567a4dbce95d7c2a6a3a7, type: 3}
 --- !u!95 &4713859752336664672
 Animator:
   serializedVersion: 7
@@ -180,7 +186,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 10
+  m_Mass: 5
   m_LinearDamping: 2
   m_AngularDamping: 0.25
   m_GravityScale: 0

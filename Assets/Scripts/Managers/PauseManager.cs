@@ -26,7 +26,7 @@ public class PauseManager : MonoBehaviour
     {
         pauseMenuScreen.blocksRaycasts = false;
 
-        musicSlider.value = PlayerOptions.GetMusicVolume();
+        musicSlider.value = PlayerOptions.GetMusicVolumeSettings();
         sfxSlider.value = PlayerOptions.GetSFXVolume();
     }
 

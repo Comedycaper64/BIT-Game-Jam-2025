@@ -13,6 +13,9 @@ public class EnemyHealth : HealthSystem
     [SerializeField]
     private AudioClip enemyHitSFX;
 
+    [SerializeField]
+    private AudioClip enemyDeathSFX;
+
     public Action OnTakeDamage;
     public Action OnDeath;
 
@@ -40,15 +43,15 @@ public class EnemyHealth : HealthSystem
 
         health = Mathf.Max(0, health - damage);
 
-        AudioManager.PlaySFX(enemyHitSFX, 1f, 0, transform.position);
-
         if (health == 0f)
         {
+            AudioManager.PlaySFX(enemyDeathSFX, 1f, 0, transform.position);
             Die();
         }
         else
         {
             OnTakeDamage?.Invoke();
+            AudioManager.PlaySFX(enemyHitSFX, 1f, 0, transform.position);
         }
     }
 }

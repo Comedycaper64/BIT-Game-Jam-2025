@@ -15,6 +15,9 @@ public class LightPlant : MonoBehaviour
 
     [SerializeField]
     private AudioClip lightPlantFed;
+
+    [SerializeField]
+    private AudioClip lightPlantDie;
     private Coroutine graceCoroutine;
 
     public Action OnPlantBroken;
@@ -79,6 +82,8 @@ public class LightPlant : MonoBehaviour
 
         isBreaking = false;
         isBroken = true;
+
+        AudioManager.PlaySFX(lightPlantDie, 1f, 0, transform.position);
 
         //change sprite to reflect
 

@@ -5,8 +5,11 @@ public class PlayerMovement : MonoBehaviour
 {
     private bool canMove;
     private bool dashAvailable;
+    private int footstepIndex = 0;
     private float dashModifier = 1f;
     private float dashTimer = 0f;
+    private float footStepTimer = 0f;
+    private const float TIME_BETWEEN_STEPS = 1.5f;
     private PlayerStats stats;
     private Coroutine dashCoroutine;
     private InputManager inputManager;
@@ -21,7 +24,13 @@ public class PlayerMovement : MonoBehaviour
     private Animator playerAnimator;
 
     [SerializeField]
+    private Animator playerHeadAnimator;
+
+    [SerializeField]
     private AudioClip dashSFX;
+
+    [SerializeField]
+    private AudioClip[] footstepSFX;
 
     private void Awake()
     {
@@ -88,10 +97,28 @@ public class PlayerMovement : MonoBehaviour
         if (movementValue.sqrMagnitude > 0f)
         {
             playerAnimator.SetBool("moving", true);
+            playerHeadAnimator.SetBool("moving", true);
+
+            footStepTimer += Time.deltaTime;
+
+            if (footStepTimer >= (TIME_BETWEEN_STEPS / stats.GetMovementSpeed()))
+            {
+                AudioManager.PlaySFX(
+                    footstepSFX[footstepIndex],
+                    0.75f,
+                    0,
+                    transform.position,
+                    false
+                );
+                footstepIndex++;
+                footstepIndex = footstepIndex % footstepSFX.Length;
+                footStepTimer = 0f;
+            }
         }
         else
         {
             playerAnimator.SetBool("moving", false);
+            playerHeadAnimator.SetBool("moving", false);
         }
 
         if (movementValue.x < 0)

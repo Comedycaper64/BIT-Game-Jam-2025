@@ -4,18 +4,24 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private bool levelActive = false;
+    private int difficultyIncreaseIndex = 0;
     private float levelSurviveTime = 0f;
     private float timeBetweenEnemySpawns = 4f;
     private float enemySpawnTimer = 0f;
 
-    private const float BIRD_SPAWN_TIME = 15f;
-    private const float BOAR_SPAWN_TIME = 30f;
+    // private const float BIRD_SPAWN_TIME = 15f;
+    // private const float BOAR_SPAWN_TIME = 30f;
+    [SerializeField]
+    private float[] difficultyIncreaseTimes;
 
     [SerializeField]
     private LightManager lightManager;
 
     [SerializeField]
     private EnemySpawner enemySpawner;
+
+    [SerializeField]
+    private AudioClip gameOverSFX;
     public static Action OnGameEnd;
 
     private void Awake()
@@ -46,7 +52,26 @@ public class LevelManager : MonoBehaviour
         GameStateCheck();
     }
 
-    private void GameStateCheck() { }
+    private void GameStateCheck()
+    {
+        if (difficultyIncreaseIndex >= difficultyIncreaseTimes.Length)
+        {
+            return;
+        }
+
+        if (levelSurviveTime > difficultyIncreaseTimes[difficultyIncreaseIndex])
+        {
+            IncreaseDifficulty();
+            difficultyIncreaseIndex++;
+        }
+    }
+
+    private void IncreaseDifficulty()
+    {
+        int currentBehaviour = (int)enemySpawner.GetSpawnerBehaviour();
+        currentBehaviour++;
+        enemySpawner.UpdateSpawnerBehaviour((SpawnerBehaviour)currentBehaviour);
+    }
 
     private void EnemySpawnCheck()
     {
@@ -74,6 +99,8 @@ public class LevelManager : MonoBehaviour
 
     private void GameOver()
     {
+        AudioManager.PlaySFX(gameOverSFX, 1f, 0, transform.position);
+
         levelActive = false;
         OnGameEnd?.Invoke();
     }

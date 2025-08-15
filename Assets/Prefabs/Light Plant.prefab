@@ -51,6 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightStoredMax: 100
   lightPlantFed: {fileID: 8300000, guid: 2613b166b90428147b778768cd381965, type: 3}
+  lightPlantDie: {fileID: 8300000, guid: 3f766b06ff3a0a0409c1085d14264cf0, type: 3}
 --- !u!114 &8409777556605110316
 MonoBehaviour:
   m_ObjectHideFlags: 0

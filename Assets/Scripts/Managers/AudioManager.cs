@@ -15,6 +15,8 @@ public class AudioManager : MonoBehaviour
         twohundred
     }
 
+    private bool musicFadeInProgress = false;
+
     private const float MIN_PITCH_VARIATION = 0.8f;
     private const float MAX_PITCH_VARIATION = 1.2f;
     private const float FADE_SPEED = 0.25f;
@@ -22,14 +24,22 @@ public class AudioManager : MonoBehaviour
     private static int sfxPoolCounter = 0;
     private float fadeCounter = 0f;
 
-    private bool fadeIn = false;
-    private bool fadeOut = false;
+    // private bool fadeIn = false;
+    // private bool fadeOut = false;
+
+    // [SerializeField]
+    // private AudioSource musicAudioSource;
+    private AudioSource previousAudioSource;
+    private AudioSource currentAudioSource;
 
     [SerializeField]
-    private AudioClip intenseTrack;
+    private AudioSource lowLightAudio;
 
     [SerializeField]
-    private AudioSource musicAudioSource;
+    private AudioSource mediumLightAudio;
+
+    [SerializeField]
+    private AudioSource highLightAudio;
 
     [SerializeField]
     private AudioSource[] localSfxPool;
@@ -63,84 +73,64 @@ public class AudioManager : MonoBehaviour
             enumToPitch.Add(PitchEnum.oneSeventyFive, 1.75f);
             enumToPitch.Add(PitchEnum.twohundred, 2f);
         }
+
+        PlayHighLightMusic();
     }
 
     private void Update()
     {
-        if (fadeIn)
+        if (musicFadeInProgress)
         {
-            FadeIn();
-        }
-        else if (fadeOut)
-        {
-            FadeOut();
+            FadeMusic();
         }
     }
 
     private void SetMusicAudioSourceVolume(float newVolume)
     {
-        fadeIn = false;
-        fadeOut = false;
-
-        musicAudioSource.volume = newVolume;
+        currentAudioSource.volume = newVolume;
     }
 
-    private void FadeIn()
+    private void FadeMusic()
     {
         fadeCounter += FADE_SPEED * Time.unscaledDeltaTime;
 
-        if (fadeCounter < 1f)
-        {
-            float volume = Mathf.Lerp(0f, PlayerOptions.GetMusicVolume(), fadeCounter);
-            musicAudioSource.volume = volume;
-        }
-        else
-        {
-            musicAudioSource.volume = PlayerOptions.GetMusicVolume();
+        float fadeInVolume = Mathf.Lerp(0f, PlayerOptions.GetMusicVolume(), fadeCounter);
+        currentAudioSource.volume = fadeInVolume;
 
-            fadeIn = false;
-        }
-    }
-
-    private void FadeOut()
-    {
-        fadeCounter += FADE_SPEED * 1.5f * Time.unscaledDeltaTime;
-
-        if (fadeCounter < 1f)
+        if (previousAudioSource)
         {
-            float volume = Mathf.Lerp(PlayerOptions.GetMusicVolume(), 0f, fadeCounter);
-            musicAudioSource.volume = volume;
+            float fadeOutVolume = PlayerOptions.GetMusicVolume() - fadeInVolume;
+            previousAudioSource.volume = fadeOutVolume;
         }
-        else
+
+        if (fadeCounter >= 1f)
         {
-            fadeOut = false;
+            musicFadeInProgress = false;
         }
     }
 
-    private void FadeOutMusic()
+    public void PlayLowLightMusic()
     {
-        fadeOut = true;
-        fadeIn = false;
+        previousAudioSource = currentAudioSource;
+        currentAudioSource = lowLightAudio;
+        musicFadeInProgress = true;
         fadeCounter = 0f;
     }
 
-    private void FadeInMusic()
+    public void PlayMediumLightMusic()
     {
-        SetMusicAudioSourceVolume(0f);
-        fadeIn = true;
-        fadeOut = false;
+        previousAudioSource = currentAudioSource;
+        currentAudioSource = mediumLightAudio;
+        musicFadeInProgress = true;
         fadeCounter = 0f;
     }
 
-    public void StartMusic()
+    public void PlayHighLightMusic()
     {
-        musicAudioSource.Play();
-        FadeInMusic();
-    }
-
-    public void StopMusic()
-    {
-        FadeOutMusic();
+        previousAudioSource = currentAudioSource;
+        currentAudioSource = highLightAudio;
+        musicFadeInProgress = true;
+        fadeCounter = 0f;
     }
 
     private static AudioSource PlaySFXClip(

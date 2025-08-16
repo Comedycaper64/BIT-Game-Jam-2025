@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class EnemyMovement : MonoBehaviour
@@ -5,6 +6,7 @@ public abstract class EnemyMovement : MonoBehaviour
     private int footStepIndex = 0;
     private float footStepTimer = 0f;
     private float footStepTime = 0.75f;
+    private float enemyDespawnDistance = 15f;
 
     protected float approachRefreshCD = 0.1f;
     protected float approachRefreshTimer = 0f;
@@ -32,8 +34,17 @@ public abstract class EnemyMovement : MonoBehaviour
 
     [SerializeField]
     protected AudioClip attackSFX;
+    public Action OnEnemyDespawn;
 
-    public void KnockbackEnemy(Vector2 knockbackDirection) { }
+    public void KnockbackEnemy(Vector2 knockbackDirection, float knockbackStrength)
+    {
+        enemyRB.AddForce(knockbackDirection * knockbackStrength, ForceMode2D.Impulse);
+    }
+
+    public void SetNewSpeed(float newSpeed)
+    {
+        movementSpeed = newSpeed;
+    }
 
     protected void ApplyMovementForces(Vector2 moveDirection)
     {
@@ -78,7 +89,13 @@ public abstract class EnemyMovement : MonoBehaviour
     {
         Vector2 playerDirection = playerPosition - (Vector2)transform.position;
         float playerDistance = Vector2.Distance(playerPosition, transform.position);
-        float desiredDistanceRatio = (playerDistance - approachDistance) / playerDistance;
+
+        if (playerDistance >= enemyDespawnDistance)
+        {
+            OnEnemyDespawn?.Invoke();
+        }
+
+        float desiredDistanceRatio = (playerDistance - GetApproachDistance()) / playerDistance;
         Vector2 approachDirection = playerDirection * desiredDistanceRatio;
 
         return approachDirection;

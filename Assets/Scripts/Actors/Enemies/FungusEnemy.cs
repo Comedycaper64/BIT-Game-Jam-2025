@@ -45,7 +45,7 @@ public class FungusEnemy : MonoBehaviour
 
     private void SpawnCloud()
     {
-        //aniamtor trigger for attack
+        fungusAnimator.SetTrigger("attack");
         AudioManager.PlaySFX(fungusAttackSFX, 1f, 0, transform.position);
         int randomInt = Random.Range(0, cloudSpawnLocations.Length);
         fungusCloud.transform.position = cloudSpawnLocations[randomInt].position;
@@ -54,6 +54,7 @@ public class FungusEnemy : MonoBehaviour
 
     public void SpawnFungus()
     {
+        fungusAnimator.SetTrigger("spawn");
         fungusActive = true;
         AudioManager.PlaySFX(fungusSpawnSFX, 1f, 0, transform.position);
     }

@@ -28,7 +28,7 @@ public class BoarMovement : EnemyMovement
     public override void PerformAttack(Vector2 playerPosition)
     {
         approach = false;
-        AudioManager.PlaySFX(attackSFX, 1f, 0, transform.position);
+        AudioManager.PlaySFX(attackSFX, 0.25f, 0, transform.position);
         attackCoroutine = StartCoroutine(AttackMovement(playerPosition));
     }
 
@@ -53,10 +53,15 @@ public class BoarMovement : EnemyMovement
     public IEnumerator AttackMovement(Vector2 playerPosition)
     {
         Vector2 playerDirection = (playerPosition - (Vector2)transform.position).normalized;
-        enemyRB.AddForce(-playerDirection * 3f, ForceMode2D.Impulse);
+        enemyRB.AddForce(-playerDirection * 10f, ForceMode2D.Impulse);
 
         yield return new WaitForSeconds(attackWindupTime);
-        enemyRB.AddForce(playerDirection * 10f, ForceMode2D.Impulse);
+
+        for (int i = 0; i < 10f; i++)
+        {
+            yield return new WaitForSeconds(0.1f);
+            enemyRB.AddForce(playerDirection * 10f, ForceMode2D.Impulse);
+        }
     }
 
     public override void ApproachPlayer(Vector2 playerPosition)

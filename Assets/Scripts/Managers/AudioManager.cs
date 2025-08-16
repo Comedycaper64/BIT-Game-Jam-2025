@@ -49,8 +49,6 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PauseManager.OnMusicVolumeUpdated += UpdateMusicVolume;
-
         sfxPool = localSfxPool;
         sfxPoolCounter = 0;
     }
@@ -62,6 +60,8 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
+        PauseManager.OnMusicVolumeUpdated += UpdateMusicVolume;
+
         if (enumToPitch.Count == 0)
         {
             enumToPitch.Add(PitchEnum.normal, 1f);
@@ -93,9 +93,12 @@ public class AudioManager : MonoBehaviour
     private void FadeMusic()
     {
         fadeCounter += FADE_SPEED * Time.unscaledDeltaTime;
-
         float fadeInVolume = Mathf.Lerp(0f, PlayerOptions.GetMusicVolume(), fadeCounter);
-        currentAudioSource.volume = fadeInVolume;
+
+        if (currentAudioSource)
+        {
+            currentAudioSource.volume = fadeInVolume;
+        }
 
         if (previousAudioSource)
         {
@@ -107,6 +110,14 @@ public class AudioManager : MonoBehaviour
         {
             musicFadeInProgress = false;
         }
+    }
+
+    public void PlayNoMusic()
+    {
+        previousAudioSource = currentAudioSource;
+        currentAudioSource = null;
+        musicFadeInProgress = true;
+        fadeCounter = 0f;
     }
 
     public void PlayLowLightMusic()

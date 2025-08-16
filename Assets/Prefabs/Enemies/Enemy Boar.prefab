@@ -58,7 +58,6 @@ MonoBehaviour:
   attackTime: 3
   enemyMovement: {fileID: 8111969802532345714}
   smAnimator: {fileID: 4713859752336664672}
-  boarVisual: {fileID: 8910988387039088460}
   boarCollider: {fileID: 1583022080365229638}
   enemyContactDamager: {fileID: 8700552815786593993}
   boarSpawnSFX: {fileID: 8300000, guid: c7de647f306fd6042a72e14330a1b1ad, type: 3}
@@ -74,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e73e05a73984d83428e0a8fd6e872ab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 20
+  movementSpeed: 30
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
@@ -359,7 +358,7 @@ SpriteRenderer:
   m_SortingLayerID: 35874005
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3818157907930065138, guid: 349dfbdc987bbe44bb222f67c73f5390, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -367,6 +366,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

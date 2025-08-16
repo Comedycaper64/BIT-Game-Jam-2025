@@ -6,7 +6,8 @@ public enum SpawnerBehaviour
     birds,
     boars,
     fastBats,
-    fastBirds
+    fastBirds,
+    fastBoars
 }
 
 public class EnemySpawner : MonoBehaviour
@@ -20,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     private int aliveEnemies = 0;
     private int enemySpawnLimit;
 
-    private const int SPAWN_AVAILABILITY_CHECKS = 5;
+    private const int SPAWN_AVAILABILITY_CHECKS = 15;
     private const float SPAWN_AVAILABILITY_RADIUS = 0.25f;
 
     private const int HAWK_THRESHOLD = 50;
@@ -146,12 +147,12 @@ public class EnemySpawner : MonoBehaviour
 
         spawnedBat.transform.position = spawnPosition;
 
-        // if ((int)spawnerBehaviour >= (int)SpawnerBehaviour.fastBirds)
-        // {
-        //     //Spawn Fast birds
-        // }
-
         spawnedBat.SpawnEnemy();
+
+        if ((int)spawnerBehaviour >= (int)SpawnerBehaviour.fastBats)
+        {
+            spawnedBat.SetNewSpeed();
+        }
 
         batIndex++;
 
@@ -167,12 +168,12 @@ public class EnemySpawner : MonoBehaviour
 
         spawnedBird.transform.position = spawnPosition;
 
-        // if ((int)spawnerBehaviour >= (int)SpawnerBehaviour.fastBats)
-        // {
-        //     //Spawn Fast Bats
-        // }
-
         spawnedBird.SpawnEnemy();
+
+        if ((int)spawnerBehaviour >= (int)SpawnerBehaviour.fastBirds)
+        {
+            spawnedBird.SetNewSpeed();
+        }
 
         birdIndex++;
 
@@ -189,6 +190,11 @@ public class EnemySpawner : MonoBehaviour
         spawnedBoar.transform.position = spawnPosition;
 
         spawnedBoar.SpawnEnemy();
+
+        if ((int)spawnerBehaviour >= (int)SpawnerBehaviour.fastBoars)
+        {
+            spawnedBoar.SetNewSpeed();
+        }
 
         boarIndex++;
 

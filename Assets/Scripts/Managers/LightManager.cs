@@ -15,8 +15,8 @@ public class LightManager : MonoBehaviour
     private bool musicChangeCooldown = false;
     private float currentLightLevel = 10;
     private float lightLevel = 100;
-    private float lightDrainSpeed = 2f;
-    private float lightDrainBreakMultiplier = 2f;
+    private float lightDrainSpeed = 1f;
+    private float lightDrainBreakMultiplier = 1.5f;
     private const float MEDIUM_LIGHT_LEVEL = 3f;
     private const float HIGH_LIGHT_LEVEL = 6f;
     private const float MUSIC_CHANGE_CD = 2f;
@@ -43,12 +43,12 @@ public class LightManager : MonoBehaviour
 
     private void OnEnable()
     {
-        LevelManager.OnGameEnd += EndLightCheck;
+        LevelManager.OnGameEndLight += EndLightCheck;
     }
 
     private void OnDisable()
     {
-        LevelManager.OnGameEnd -= EndLightCheck;
+        LevelManager.OnGameEndLight -= EndLightCheck;
         if (musicChangeCoroutine != null)
         {
             StopCoroutine(musicChangeCoroutine);
@@ -159,10 +159,12 @@ public class LightManager : MonoBehaviour
     public void BeginLightCheck()
     {
         lightCheckActive = true;
+        OnLightLevelChange?.Invoke(this, lightGradient.Evaluate(1f));
     }
 
-    private void EndLightCheck()
+    private void EndLightCheck(object sender, bool lightsOut)
     {
         lightCheckActive = false;
+        audioManager.PlayNoMusic();
     }
 }

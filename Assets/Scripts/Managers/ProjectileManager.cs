@@ -20,8 +20,7 @@ public class ProjectileManager : MonoBehaviour
         Vector2 flightDirection,
         int projectileDamage,
         float projectileSpeed,
-        bool playerProjectile = false,
-        Sprite projectileSprite = null
+        bool playerProjectile = false
     )
     {
         Projectile spawnedProjectile = projectiles[projectileIndex];
@@ -35,8 +34,7 @@ public class ProjectileManager : MonoBehaviour
             flightDirection,
             projectileDamage,
             projectileSpeed,
-            playerProjectile,
-            projectileSprite
+            playerProjectile
         );
 
         projectileIndex++;

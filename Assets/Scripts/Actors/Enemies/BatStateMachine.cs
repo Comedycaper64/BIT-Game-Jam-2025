@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BatStateMachine : StateMachine
 {
-    [SerializeField]
-    private GameObject batVisual;
+    private const float FASTER_SPEED = 14;
+    private const float FASTER_ATTACK = 2;
 
     [SerializeField]
     private Collider2D batCollider;
@@ -24,5 +24,11 @@ public class BatStateMachine : StateMachine
     {
         batCollider.enabled = !toggle;
         enemyContactDamager.ToggleDamager(!toggle);
+    }
+
+    public void SetNewSpeed()
+    {
+        enemyMovement.SetNewSpeed(FASTER_SPEED);
+        attackInterval = FASTER_ATTACK;
     }
 }

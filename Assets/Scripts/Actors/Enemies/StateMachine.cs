@@ -10,7 +10,7 @@ public abstract class StateMachine : MonoBehaviour
     private float attackRange = 3f;
 
     [SerializeField]
-    private float attackInterval = 3f;
+    protected float attackInterval = 3f;
 
     [SerializeField]
     private float attackTime = 1f;
@@ -26,6 +26,7 @@ public abstract class StateMachine : MonoBehaviour
         enemyHealth = GetComponent<EnemyHealth>();
 
         enemyHealth.OnDeath += KillEnemy;
+        enemyMovement.OnEnemyDespawn += DespawnEnemy;
     }
 
     private void Start()
@@ -38,6 +39,7 @@ public abstract class StateMachine : MonoBehaviour
     private void OnDisable()
     {
         enemyHealth.OnDeath -= KillEnemy;
+        enemyMovement.OnEnemyDespawn -= DespawnEnemy;
     }
 
     void Update()
@@ -74,6 +76,11 @@ public abstract class StateMachine : MonoBehaviour
         SwitchState(new EnemyDeadState(this));
 
         PetalManager.SpawnPetal(transform.position, petalDropValue, petalDropValue * 5);
+    }
+
+    private void DespawnEnemy()
+    {
+        SwitchState(new EnemyDeadState(this));
     }
 
     public abstract void ToggleInactive(bool toggle);

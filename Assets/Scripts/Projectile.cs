@@ -8,16 +8,17 @@ public class Projectile : MonoBehaviour
 
     private int damage;
     private float speed;
+    private float knockbackStrength = 5f;
     private Vector3 direction;
 
     [SerializeField]
     private Collider2D projectileCollider;
 
     [SerializeField]
-    private SpriteRenderer projectileRenderer;
+    private GameObject projectileVisual;
 
     [SerializeField]
-    private GameObject projectileVisual;
+    private GameObject projectileVisualEnemy;
 
     [SerializeField]
     private LayerMask environmentLayermask;
@@ -26,7 +27,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        ToggleProjectile(false);
+        ToggleProjectile(false, false);
     }
 
     private void Update()
@@ -39,50 +40,39 @@ public class Projectile : MonoBehaviour
         transform.position += direction * speed * Time.deltaTime;
     }
 
-    private void ToggleProjectile(bool toggle)
+    private void ToggleProjectile(bool toggle, bool isPlayer)
     {
-        projectileVisual.SetActive(toggle);
+        projectileVisual.SetActive(false);
+        projectileVisualEnemy.SetActive(false);
+
+        if (toggle)
+        {
+            projectileVisual.SetActive(isPlayer);
+            projectileVisualEnemy.SetActive(!isPlayer);
+        }
+
         projectileCollider.enabled = toggle;
         projectileActive = toggle;
     }
 
-    public void Spawn(
-        Vector2 direction,
-        int damage,
-        float speed,
-        bool isPlayerProjectile,
-        Sprite projectileSprite
-    )
+    public void Spawn(Vector2 direction, int damage, float speed, bool isPlayerProjectile)
     {
         this.direction = direction;
         this.damage = damage;
         this.speed = speed;
 
-        if (projectileSprite != null)
-        {
-            projectileRenderer.sprite = projectileSprite;
-        }
-
         playerProjectile = isPlayerProjectile;
 
-        ToggleProjectile(true);
+        ToggleProjectile(true, playerProjectile);
     }
 
     public void Deactivate()
     {
-        ToggleProjectile(false);
+        ToggleProjectile(false, playerProjectile);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ((environmentLayermask & (1 << other.gameObject.layer)) != 0)
-        {
-            Deactivate();
-            OnPlayerProjectileExpended?.Invoke();
-            //Maybe particle effect for hitting wall?
-            return;
-        }
-
         if (
             other.TryGetComponent<HealthSystem>(out HealthSystem healthSystem)
             && (healthSystem.GetIsPlayer() != playerProjectile)
@@ -101,13 +91,21 @@ public class Projectile : MonoBehaviour
 
                 if (other.TryGetComponent<EnemyMovement>(out EnemyMovement movement))
                 {
-                    movement.KnockbackEnemy(direction);
+                    movement.KnockbackEnemy(direction, knockbackStrength);
                 }
             }
 
             healthSystem.TakeDamage(damage);
             Deactivate();
+            return;
         }
-        return;
+
+        if ((environmentLayermask & (1 << other.gameObject.layer)) != 0)
+        {
+            Deactivate();
+            OnPlayerProjectileExpended?.Invoke();
+            //Maybe particle effect for hitting wall?
+            return;
+        }
     }
 }

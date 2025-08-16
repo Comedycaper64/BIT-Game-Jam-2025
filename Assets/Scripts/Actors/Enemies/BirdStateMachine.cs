@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BirdStateMachine : StateMachine
 {
-    [SerializeField]
-    private GameObject birdVisual;
+    private const float FASTER_SPEED = 20;
+    private const float FASTER_ATTACK = 2;
 
     [SerializeField]
     private Collider2D birdCollider;
@@ -13,13 +13,19 @@ public class BirdStateMachine : StateMachine
 
     public override void SpawnEnemy()
     {
+        enemyHealth.SetMaxHealth();
         SwitchState(new EnemySpawnState(this));
         AudioManager.PlaySFX(birdSpawnSFX, 1f, 0, transform.position);
     }
 
     public override void ToggleInactive(bool toggle)
     {
-        birdVisual.SetActive(!toggle);
         birdCollider.enabled = !toggle;
+    }
+
+    public void SetNewSpeed()
+    {
+        enemyMovement.SetNewSpeed(FASTER_SPEED);
+        attackInterval = FASTER_ATTACK;
     }
 }

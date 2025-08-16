@@ -6,11 +6,11 @@ public class LevelManager : MonoBehaviour
     private bool levelActive = false;
     private int difficultyIncreaseIndex = 0;
     private float levelSurviveTime = 0f;
-    private float timeBetweenEnemySpawns = 4f;
+    private const float ENEMY_SPAWN_CD_START = 3f;
+    private const float ENEMY_SPAWN_CD_DECREASE = 0.2f;
+    private float timeBetweenEnemySpawns;
     private float enemySpawnTimer = 0f;
 
-    // private const float BIRD_SPAWN_TIME = 15f;
-    // private const float BOAR_SPAWN_TIME = 30f;
     [SerializeField]
     private float[] difficultyIncreaseTimes;
 
@@ -22,20 +22,21 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField]
     private AudioClip gameOverSFX;
-    public static Action OnGameEnd;
+    public static EventHandler<bool> OnGameEndLight;
+    public static EventHandler<float> OnSetGameTime;
 
     private void Awake()
     {
         GameStartUI.OnGameStart += StartGame;
         PlayerManager.OnPlayerDead += PlayerDeadGameOver;
-        LightManager.OnLightExtinguished += GameOver;
+        LightManager.OnLightExtinguished += LightsOutGameOver;
     }
 
     private void OnDisable()
     {
         GameStartUI.OnGameStart -= StartGame;
         PlayerManager.OnPlayerDead -= PlayerDeadGameOver;
-        LightManager.OnLightExtinguished -= GameOver;
+        LightManager.OnLightExtinguished -= LightsOutGameOver;
     }
 
     private void Update()
@@ -69,6 +70,7 @@ public class LevelManager : MonoBehaviour
     private void IncreaseDifficulty()
     {
         int currentBehaviour = (int)enemySpawner.GetSpawnerBehaviour();
+        timeBetweenEnemySpawns -= ENEMY_SPAWN_CD_DECREASE;
         currentBehaviour++;
         enemySpawner.UpdateSpawnerBehaviour((SpawnerBehaviour)currentBehaviour);
     }
@@ -87,21 +89,27 @@ public class LevelManager : MonoBehaviour
     private void StartGame()
     {
         InputManager.Instance.GameStart();
-        //Enable player
         lightManager.BeginLightCheck();
         levelActive = true;
+        timeBetweenEnemySpawns = ENEMY_SPAWN_CD_START;
     }
 
     private void PlayerDeadGameOver(object sender, bool e)
     {
-        GameOver();
+        GameOver(false);
     }
 
-    private void GameOver()
+    private void LightsOutGameOver()
+    {
+        GameOver(true);
+    }
+
+    private void GameOver(bool lightExtinguished)
     {
         AudioManager.PlaySFX(gameOverSFX, 1f, 0, transform.position);
 
         levelActive = false;
-        OnGameEnd?.Invoke();
+        OnSetGameTime?.Invoke(this, levelSurviveTime);
+        OnGameEndLight?.Invoke(this, lightExtinguished);
     }
 }

@@ -168,17 +168,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee80a4bcf355204d947b0a65361d6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeedInjured: 3
-  movementSpeed: 4
-  movementSpeedFlower: 5
+  movementSpeedInjured: 4
+  movementSpeed: 5
+  movementSpeedFlower: 6
   attackDamage: 1
   attackDamageBloom: 2
   attackSpeedInjured: 1
   attackSpeedLeaf: 1.5
   attackSpeedBud: 1.75
   attackSpeedFlower: 2
-  projectileSpeed: 5
-  projectileSpeedBud: 8
+  projectileSpeed: 6
+  projectileSpeedBud: 9
   dashRechargeTime: 1.5
   dashSpeedModifier: 2.5
   dashingTime: 0.2

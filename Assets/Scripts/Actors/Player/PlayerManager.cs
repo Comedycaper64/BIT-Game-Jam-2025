@@ -12,12 +12,12 @@ public enum PlayerBloom
 public class PlayerManager : MonoBehaviour
 {
     private int petalCounter = 0;
-    private int petalStartAmount = 5;
+    private int petalStartAmount = 4;
 
     private const int PETAL_ATTACK_COST = 1;
-    private const int PETAL_CAP = 25;
-    private const int PETAL_BUD_THRESHOLD = 8;
-    private const int PETAL_BLOOM_THRESHOLD = 16;
+    private const int PETAL_CAP = 15;
+    private const int PETAL_BUD_THRESHOLD = 5;
+    private const int PETAL_BLOOM_THRESHOLD = 10;
 
     private PlayerBloom playerBloom = PlayerBloom.leaf;
     private PlayerStats playerStats;

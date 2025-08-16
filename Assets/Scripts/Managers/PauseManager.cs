@@ -24,7 +24,8 @@ public class PauseManager : MonoBehaviour
 
     private void Awake()
     {
-        pauseMenuScreen.blocksRaycasts = false;
+        //pauseMenuScreen.blocksRaycasts = false;
+        Time.timeScale = 1f;
 
         musicSlider.value = PlayerOptions.GetMusicVolumeSettings();
         sfxSlider.value = PlayerOptions.GetSFXVolume();
@@ -33,11 +34,13 @@ public class PauseManager : MonoBehaviour
     private void Start()
     {
         InputManager.Instance.OnMenuEvent += TogglePause;
+        LevelManager.OnGameEndLight += EndOfGamePause;
     }
 
     private void OnDisable()
     {
         InputManager.Instance.OnMenuEvent -= TogglePause;
+        LevelManager.OnGameEndLight -= EndOfGamePause;
     }
 
     public void SetMusicVolume(float newVolume)
@@ -85,5 +88,11 @@ public class PauseManager : MonoBehaviour
         }
 
         OnPauseGame?.Invoke(this, pauseActive);
+    }
+
+    private void EndOfGamePause(object sender, bool lightsOut)
+    {
+        pauseActive = true;
+        Time.timeScale = 0f;
     }
 }

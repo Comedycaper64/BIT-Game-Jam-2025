@@ -57,7 +57,6 @@ MonoBehaviour:
   attackTime: 1
   enemyMovement: {fileID: 8664785308120090781}
   smAnimator: {fileID: 8803995524730105328}
-  birdVisual: {fileID: 5667121671354323413}
   birdCollider: {fileID: 3261237891039085536}
   birdSpawnSFX: {fileID: 8300000, guid: 05f239daee26a8a4ba8a2c386cc29681, type: 3}
 --- !u!114 &8664785308120090781
@@ -226,7 +225,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 72481339610017010}
@@ -275,7 +274,7 @@ SpriteRenderer:
   m_SortingLayerID: 35874005
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -283,6 +282,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

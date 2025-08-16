@@ -34,13 +34,13 @@ public class InputManager : MonoBehaviour, Controls.IPlayerActions
     private void OnEnable()
     {
         PauseManager.OnPauseGame += ToggleDisableInputs;
-        LevelManager.OnGameEnd += GameEnd;
+        LevelManager.OnGameEndLight += GameEnd;
     }
 
     private void OnDisable()
     {
         PauseManager.OnPauseGame -= ToggleDisableInputs;
-        LevelManager.OnGameEnd -= GameEnd;
+        LevelManager.OnGameEndLight -= GameEnd;
     }
 
     public void OnMovement(InputAction.CallbackContext context)
@@ -108,7 +108,7 @@ public class InputManager : MonoBehaviour, Controls.IPlayerActions
         disableInputs = false;
     }
 
-    public void GameEnd()
+    public void GameEnd(object sender, bool lightsOut)
     {
         gameStarted = false;
         disableInputs = true;

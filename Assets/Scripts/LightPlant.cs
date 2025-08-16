@@ -10,8 +10,14 @@ public class LightPlant : MonoBehaviour
     private float lightStored;
 
     [SerializeField]
+    private float lightStoredInitial = 100f;
+
+    [SerializeField]
     private float lightStoredMax = 100f;
     private float breakGraceTime = 5f;
+
+    [SerializeField]
+    private Animator[] plantAnimators;
 
     [SerializeField]
     private AudioClip lightPlantFed;
@@ -24,12 +30,22 @@ public class LightPlant : MonoBehaviour
 
     private void Awake()
     {
-        lightStored = lightStoredMax;
+        lightStored = lightStoredInitial;
     }
 
     private void UpdatePlantVisual()
     {
-        //sprite reflects lightStored
+        int lightPoints = GetLightPoints();
+
+        foreach (Animator animator in plantAnimators)
+        {
+            animator.SetBool("lit", false);
+        }
+
+        for (int i = 0; i < lightPoints; i++)
+        {
+            plantAnimators[i].SetBool("lit", true);
+        }
     }
 
     public void FeedLightPlant()
@@ -72,6 +88,16 @@ public class LightPlant : MonoBehaviour
     public float GetStoredLight()
     {
         return lightStored;
+    }
+
+    public int GetLightPoints()
+    {
+        if (isBroken)
+        {
+            return -1;
+        }
+
+        return Mathf.CeilToInt(lightStored / 25f);
     }
 
     private IEnumerator BreakGracePeriod()

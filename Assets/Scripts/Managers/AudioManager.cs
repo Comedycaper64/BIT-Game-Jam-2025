@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
 
     private const float MIN_PITCH_VARIATION = 0.8f;
     private const float MAX_PITCH_VARIATION = 1.2f;
-    private const float FADE_SPEED = 0.25f;
+    private const float FADE_SPEED = 0.5f;
 
     private static int sfxPoolCounter = 0;
     private float fadeCounter = 0f;

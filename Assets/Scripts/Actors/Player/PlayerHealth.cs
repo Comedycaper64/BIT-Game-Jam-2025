@@ -1,10 +1,12 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerHealth : HealthSystem
 {
     private bool invincible = false;
     private float invincibilityDuration = 2f;
+    private float impulseStrength = 1f;
     private PlayerManager playerManager;
 
     [SerializeField]
@@ -15,6 +17,9 @@ public class PlayerHealth : HealthSystem
 
     [SerializeField]
     private AudioClip playerDeathSFX;
+
+    [SerializeField]
+    private CinemachineImpulseSource impulseSource;
 
     private void Start()
     {
@@ -50,6 +55,8 @@ public class PlayerHealth : HealthSystem
         {
             return;
         }
+
+        impulseSource.GenerateImpulse(impulseStrength);
 
         if (!playerManager.TryDecrementPetalCounter(damageAmount))
         {

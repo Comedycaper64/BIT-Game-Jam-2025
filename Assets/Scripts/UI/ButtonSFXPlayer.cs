@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ButtonSFXPlayer : MonoBehaviour
 {
-    private float hoverSfxVolume = 1f;
+    //private float hoverSfxVolume = 1f;
     private float clickSfxVolume = 1f;
 
     // [SerializeField]

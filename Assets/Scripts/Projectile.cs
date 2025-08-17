@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -8,7 +9,8 @@ public class Projectile : MonoBehaviour
 
     private int damage;
     private float speed;
-    private float knockbackStrength = 5f;
+    private float knockbackStrength = 10f;
+    private float impulseStrength = 0.25f;
     private Vector3 direction;
 
     [SerializeField]
@@ -21,9 +23,15 @@ public class Projectile : MonoBehaviour
     private GameObject projectileVisualEnemy;
 
     [SerializeField]
+    private CinemachineImpulseSource impulseSource;
+
+    [SerializeField]
+    private AudioClip wallHitSFX;
+
+    [SerializeField]
     private LayerMask environmentLayermask;
     public static Action OnPlayerProjectileHit;
-    public static Action OnPlayerProjectileExpended;
+    public static EventHandler<int> OnPlayerProjectileExpended;
 
     private void Awake()
     {
@@ -68,6 +76,7 @@ public class Projectile : MonoBehaviour
 
     public void Deactivate()
     {
+        impulseSource.GenerateImpulse(impulseStrength);
         ToggleProjectile(false, playerProjectile);
     }
 
@@ -86,12 +95,13 @@ public class Projectile : MonoBehaviour
                 }
                 else
                 {
-                    OnPlayerProjectileExpended?.Invoke();
+                    OnPlayerProjectileExpended?.Invoke(this, 2);
                 }
 
                 if (other.TryGetComponent<EnemyMovement>(out EnemyMovement movement))
                 {
                     movement.KnockbackEnemy(direction, knockbackStrength);
+                    ParticleManager.SpawnParticles(transform.position, -direction);
                 }
             }
 
@@ -103,8 +113,13 @@ public class Projectile : MonoBehaviour
         if ((environmentLayermask & (1 << other.gameObject.layer)) != 0)
         {
             Deactivate();
-            OnPlayerProjectileExpended?.Invoke();
-            //Maybe particle effect for hitting wall?
+            if (playerProjectile)
+            {
+                OnPlayerProjectileExpended?.Invoke(this, 1);
+            }
+
+            ParticleManager.SpawnParticles(transform.position, direction);
+            AudioManager.PlaySFX(wallHitSFX, 1f, 0, transform.position);
             return;
         }
     }

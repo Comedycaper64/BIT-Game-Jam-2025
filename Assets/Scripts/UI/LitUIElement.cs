@@ -13,11 +13,25 @@ public class LitUIElement : MonoBehaviour
     private void OnEnable()
     {
         LightManager.OnLightLevelChange += ChangeSpriteColour;
+        LightManager.OnLightExtinguished += DisableSprites;
     }
 
     private void OnDisable()
     {
         LightManager.OnLightLevelChange -= ChangeSpriteColour;
+        LightManager.OnLightExtinguished -= DisableSprites;
+    }
+
+    private void DisableSprites()
+    {
+        foreach (Image renderer in litRenderers)
+        {
+            renderer.enabled = false;
+        }
+        foreach (TextMeshProUGUI text in litText)
+        {
+            text.enabled = false;
+        }
     }
 
     private void ChangeSpriteColour(object sender, Color newColour)

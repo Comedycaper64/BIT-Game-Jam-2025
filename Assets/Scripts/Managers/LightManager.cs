@@ -16,7 +16,8 @@ public class LightManager : MonoBehaviour
     private float currentLightLevel = 10;
     private float lightLevel = 100;
     private float lightDrainSpeed = 1f;
-    private float lightDrainBreakMultiplier = 1.5f;
+    private float lightDrainSpeedFaster = 1.5f;
+    private float lightDrainBreakMultiplier = 1.6f;
     private const float MEDIUM_LIGHT_LEVEL = 3f;
     private const float HIGH_LIGHT_LEVEL = 6f;
     private const float MUSIC_CHANGE_CD = 2f;
@@ -71,6 +72,7 @@ public class LightManager : MonoBehaviour
     {
         float currentLightLevel = 0;
         float brokenDrainMultiplier = 1;
+        int livingPlants = 0;
 
         foreach (LightPlant plant in lightPlants)
         {
@@ -80,6 +82,10 @@ public class LightManager : MonoBehaviour
             {
                 brokenDrainMultiplier *= lightDrainBreakMultiplier;
             }
+            else
+            {
+                livingPlants++;
+            }
         }
 
         lightLevel = currentLightLevel / lightPlants.Length;
@@ -87,6 +93,11 @@ public class LightManager : MonoBehaviour
         foreach (LightPlant plant in lightPlants)
         {
             plant.DrainLight(Time.deltaTime * lightDrainSpeed * brokenDrainMultiplier);
+
+            if (livingPlants <= 1)
+            {
+                plant.RemoveDrainStop();
+            }
         }
     }
 
@@ -154,6 +165,11 @@ public class LightManager : MonoBehaviour
         musicChangeCooldown = true;
         yield return new WaitForSeconds(MUSIC_CHANGE_CD);
         musicChangeCooldown = false;
+    }
+
+    public void IncreaseLightDrainSpeed()
+    {
+        lightDrainSpeed = lightDrainSpeedFaster;
     }
 
     public void BeginLightCheck()

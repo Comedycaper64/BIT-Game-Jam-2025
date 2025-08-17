@@ -3,7 +3,7 @@ using UnityEngine;
 public class BirdStateMachine : StateMachine
 {
     private const float FASTER_SPEED = 20;
-    private const float FASTER_ATTACK = 2;
+    private const float FASTER_ATTACK = 1;
 
     [SerializeField]
     private Collider2D birdCollider;

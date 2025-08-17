@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class LightPlant : MonoBehaviour
 {
+    private bool isFilled = false;
+    private bool lastPlant = false;
     private bool isBroken = false;
     private bool isBreaking = false;
-    private float feedingLightIncrease = 10f;
+    private float feedingLightIncrease = 25f;
     private float lightStored;
+    private float drainStopTime = 3f;
 
     [SerializeField]
     private float lightStoredInitial = 100f;
@@ -15,6 +18,12 @@ public class LightPlant : MonoBehaviour
     [SerializeField]
     private float lightStoredMax = 100f;
     private float breakGraceTime = 5f;
+
+    [SerializeField]
+    private Collider2D plantCollider;
+
+    [SerializeField]
+    private GameObject[] lightDithers;
 
     [SerializeField]
     private Animator[] plantAnimators;
@@ -25,6 +34,7 @@ public class LightPlant : MonoBehaviour
     [SerializeField]
     private AudioClip lightPlantDie;
     private Coroutine graceCoroutine;
+    private Coroutine stopDrainCoroutine;
 
     public Action OnPlantBroken;
 
@@ -37,14 +47,16 @@ public class LightPlant : MonoBehaviour
     {
         int lightPoints = GetLightPoints();
 
-        foreach (Animator animator in plantAnimators)
+        for (int i = 0; i < plantAnimators.Length; i++)
         {
-            animator.SetBool("lit", false);
+            plantAnimators[i].SetBool("lit", false);
+            lightDithers[i].SetActive(false);
         }
 
         for (int i = 0; i < lightPoints; i++)
         {
             plantAnimators[i].SetBool("lit", true);
+            lightDithers[i].SetActive(true);
         }
     }
 
@@ -59,6 +71,16 @@ public class LightPlant : MonoBehaviour
 
         AudioManager.PlaySFX(lightPlantFed, 1f, 0, transform.position);
 
+        if (stopDrainCoroutine != null)
+        {
+            StopCoroutine(stopDrainCoroutine);
+        }
+
+        if (!lastPlant)
+        {
+            stopDrainCoroutine = StartCoroutine(StopDraining());
+        }
+
         if (graceCoroutine != null)
         {
             isBreaking = false;
@@ -70,7 +92,7 @@ public class LightPlant : MonoBehaviour
 
     public void DrainLight(float drainAmount)
     {
-        if (isBroken || isBreaking)
+        if (isBroken || isBreaking || isFilled)
         {
             return;
         }
@@ -100,6 +122,20 @@ public class LightPlant : MonoBehaviour
         return Mathf.CeilToInt(lightStored / 25f);
     }
 
+    public void RemoveDrainStop()
+    {
+        lastPlant = true;
+    }
+
+    private IEnumerator StopDraining()
+    {
+        isFilled = true;
+
+        yield return new WaitForSeconds(drainStopTime);
+
+        isFilled = false;
+    }
+
     private IEnumerator BreakGracePeriod()
     {
         isBreaking = true;
@@ -111,8 +147,11 @@ public class LightPlant : MonoBehaviour
 
         AudioManager.PlaySFX(lightPlantDie, 1f, 0, transform.position);
 
-        //change sprite to reflect
-
+        foreach (Animator animator in plantAnimators)
+        {
+            animator.SetTrigger("die");
+        }
+        plantCollider.enabled = false;
         OnPlantBroken?.Invoke();
     }
 }

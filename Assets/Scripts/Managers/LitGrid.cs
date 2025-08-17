@@ -9,11 +9,21 @@ public class LitGrid : MonoBehaviour
     private void OnEnable()
     {
         LightManager.OnLightLevelChange += ChangeSpriteColour;
+        LightManager.OnLightExtinguished += DisableSprites;
     }
 
     private void OnDisable()
     {
         LightManager.OnLightLevelChange -= ChangeSpriteColour;
+        LightManager.OnLightExtinguished -= DisableSprites;
+    }
+
+    private void DisableSprites()
+    {
+        foreach (Tilemap renderer in litRenderers)
+        {
+            renderer.gameObject.SetActive(false);
+        }
     }
 
     private void ChangeSpriteColour(object sender, Color newColour)

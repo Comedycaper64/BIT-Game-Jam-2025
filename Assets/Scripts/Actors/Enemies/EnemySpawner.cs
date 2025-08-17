@@ -7,7 +7,8 @@ public enum SpawnerBehaviour
     boars,
     fastBats,
     fastBirds,
-    fastBoars
+    fastBoars,
+    fastDrain
 }
 
 public class EnemySpawner : MonoBehaviour

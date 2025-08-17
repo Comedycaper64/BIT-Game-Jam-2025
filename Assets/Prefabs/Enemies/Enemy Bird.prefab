@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   petalDropValue: 2
-  attackRange: 5
-  attackInterval: 3
+  attackRange: 7
+  attackInterval: 2
   attackTime: 1
   enemyMovement: {fileID: 8664785308120090781}
   smAnimator: {fileID: 8803995524730105328}

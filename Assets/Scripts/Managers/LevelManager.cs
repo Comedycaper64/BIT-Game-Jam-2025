@@ -64,6 +64,11 @@ public class LevelManager : MonoBehaviour
         {
             IncreaseDifficulty();
             difficultyIncreaseIndex++;
+
+            if (difficultyIncreaseIndex >= (difficultyIncreaseTimes.Length - 1))
+            {
+                lightManager.IncreaseLightDrainSpeed();
+            }
         }
     }
 

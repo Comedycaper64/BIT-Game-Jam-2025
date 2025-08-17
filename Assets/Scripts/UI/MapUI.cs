@@ -51,6 +51,7 @@ public class MapUI : MonoBehaviour
     private void OnEnable()
     {
         LightManager.OnLightLevelChange += ChangeMapColour;
+        LightManager.OnLightExtinguished += DisableSprites;
     }
 
     private void OnDisable()
@@ -61,6 +62,15 @@ public class MapUI : MonoBehaviour
         }
 
         LightManager.OnLightLevelChange -= ChangeMapColour;
+        LightManager.OnLightExtinguished -= DisableSprites;
+    }
+
+    private void DisableSprites()
+    {
+        foreach (MapTile tile in mapTileGrid)
+        {
+            tile.ToggleTileVisual(false);
+        }
     }
 
     private void ChangeMapColour(object sender, Color newColour)

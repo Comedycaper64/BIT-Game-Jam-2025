@@ -14,7 +14,6 @@ public class PlayerManager : MonoBehaviour
     private int petalCounter = 0;
     private int petalStartAmount = 4;
 
-    private const int PETAL_ATTACK_COST = 1;
     private const int PETAL_CAP = 15;
     private const int PETAL_BUD_THRESHOLD = 5;
     private const int PETAL_BLOOM_THRESHOLD = 10;
@@ -27,6 +26,9 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField]
     private Animator playerHeadAnimator;
+
+    [SerializeField]
+    private AudioClip bloomSFX;
 
     public static EventHandler<bool> OnPlayerDead;
     public static EventHandler<int> OnNewPetalCount;
@@ -54,7 +56,7 @@ public class PlayerManager : MonoBehaviour
         Projectile.OnPlayerProjectileExpended -= PlayerProjectileExpended;
     }
 
-    private void UpdateBloomStatus()
+    private void UpdateBloomStatus(bool petalIncrease = false)
     {
         OnNewPetalCount?.Invoke(this, petalCounter);
 
@@ -69,20 +71,52 @@ public class PlayerManager : MonoBehaviour
         }
         else if (petalCounter <= PETAL_BUD_THRESHOLD)
         {
-            playerBloom = PlayerBloom.leaf;
+            if (playerBloom != PlayerBloom.leaf)
+            {
+                playerBloom = PlayerBloom.leaf;
+
+                playerHeadAnimator.SetTrigger("bloom");
+
+                if (petalIncrease)
+                {
+                    playerAnimator.SetTrigger("leaf");
+                    AudioManager.PlaySFX(bloomSFX, 1f, 0, transform.position);
+                }
+            }
         }
         else if (petalCounter < PETAL_BLOOM_THRESHOLD)
         {
-            playerBloom = PlayerBloom.bud;
             playerHeadAnimator.SetBool("bulb", true);
+
+            if (playerBloom != PlayerBloom.bud)
+            {
+                playerBloom = PlayerBloom.bud;
+
+                playerHeadAnimator.SetTrigger("bloom");
+
+                if (petalIncrease)
+                {
+                    playerAnimator.SetTrigger("bud");
+                    AudioManager.PlaySFX(bloomSFX, 1f, 0, transform.position);
+                }
+            }
         }
         else
         {
-            playerBloom = PlayerBloom.flower;
             playerHeadAnimator.SetBool("flower", true);
-        }
 
-        playerHeadAnimator.SetTrigger("bloom");
+            if (playerBloom != PlayerBloom.flower)
+            {
+                playerBloom = PlayerBloom.flower;
+
+                if (petalIncrease)
+                {
+                    playerAnimator.SetTrigger("flower");
+                    AudioManager.PlaySFX(bloomSFX, 1f, 0, transform.position);
+                    playerHeadAnimator.SetTrigger("bloom");
+                }
+            }
+        }
 
         playerStats.UpdateStats(playerBloom);
     }
@@ -101,9 +135,9 @@ public class PlayerManager : MonoBehaviour
             petalCounter = PETAL_CAP;
         }
 
-        playerAnimator.SetTrigger("heal");
+        UpdateBloomStatus(true);
 
-        UpdateBloomStatus();
+        playerAnimator.SetTrigger("heal");
 
         return true;
     }
@@ -139,8 +173,8 @@ public class PlayerManager : MonoBehaviour
         //IncrementPetalCounter(1);
     }
 
-    private void PlayerProjectileExpended()
+    private void PlayerProjectileExpended(object sender, int petalsExpended)
     {
-        TryDecrementPetalCounter(PETAL_ATTACK_COST);
+        TryDecrementPetalCounter(petalsExpended);
     }
 }

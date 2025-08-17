@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private Animator playerHeadAnimator;
+
+    [SerializeField]
+    private Slider dashSlider;
 
     [SerializeField]
     private AudioClip dashSFX;
@@ -66,7 +70,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 dashTimer += Time.deltaTime;
 
-                if (dashTimer >= stats.GetDashRechargeTime())
+                float dashRechargeTime = stats.GetDashRechargeTime();
+
+                dashSlider.value = dashTimer / dashRechargeTime;
+
+                if (dashTimer >= dashRechargeTime)
                 {
                     dashAvailable = true;
                     dashTimer = 0f;

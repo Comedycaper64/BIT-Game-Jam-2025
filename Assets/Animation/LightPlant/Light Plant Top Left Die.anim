@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Onion Idle
+  m_Name: Light Plant Top Left Die
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,29 +21,27 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1601180525, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: -874001096797625688, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.083333336
-      value: {fileID: 285106837, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 3880593842843873445, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.16666667
-      value: {fileID: 495404001, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 5244102151757635338, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.25
-      value: {fileID: 132759016, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: -1321590188401137202, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.33333334
-      value: {fileID: 1308313044, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 1417911614, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.41666666
-      value: {fileID: 619771597, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 2110811539, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.5
-      value: {fileID: 59862577, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 664979093, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     - time: 0.5833333
-      value: {fileID: -331972729, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - time: 0.6666667
-      value: {fileID: -331972729, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+      value: {fileID: 664979093, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
     attribute: m_Sprite
-    path: Player Head Animator/Player Visual/Body Visual
+    path: 
     classID: 212
     script: {fileID: 0}
     flags: 2
-  m_SampleRate: 60
+  m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -51,7 +49,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 326862995
+      path: 0
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -60,26 +58,25 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1601180525, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 285106837, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 495404001, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 132759016, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 1308313044, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 619771597, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: 59862577, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: -331972729, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
-    - {fileID: -331972729, guid: 5f71ffd2ca8295546bf6e13984913ad5, type: 3}
+    - {fileID: -874001096797625688, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 3880593842843873445, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 5244102151757635338, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: -1321590188401137202, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 1417911614, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 2110811539, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 664979093, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
+    - {fileID: 664979093, guid: 43b5c7ab92cd77e45b34019de44088c0, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.68333334
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0

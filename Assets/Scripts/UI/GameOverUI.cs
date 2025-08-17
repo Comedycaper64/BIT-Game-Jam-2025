@@ -15,7 +15,16 @@ public class GameOverUI : MonoBehaviour
     private TextMeshProUGUI[] litText;
 
     [SerializeField]
+    private TextMeshProUGUI gameOverText;
+
+    [SerializeField]
     private TextMeshProUGUI levelTimeText;
+
+    [SerializeField]
+    private GameObject highScoreText;
+
+    [SerializeField]
+    private Animator uiAnim;
 
     [SerializeField]
     private CanvasGroup gameOverGroup;
@@ -43,6 +52,12 @@ public class GameOverUI : MonoBehaviour
     {
         TimeSpan time = TimeSpan.FromSeconds(gameTime);
         levelTimeText.text = "TIME SURVIVED: " + time.ToString(@"mm\:ss");
+
+        if (gameTime > PlayerOptions.GetHighScore())
+        {
+            highScoreText.SetActive(true);
+            PlayerOptions.SetHighScore(gameTime);
+        }
     }
 
     private void ToggleGameOverUI(object sender, bool lightsOut)
@@ -58,9 +73,14 @@ public class GameOverUI : MonoBehaviour
             {
                 text.color = lightColour;
             }
+            gameOverText.text = "YOU WERE SLAIN";
+            uiAnim.SetTrigger("dead");
+        }
+        else
+        {
+            uiAnim.SetTrigger("appear");
         }
 
-        gameOverGroup.gameObject.SetActive(true);
         gameOverGroup.blocksRaycasts = true;
     }
 
